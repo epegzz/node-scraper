@@ -1,0 +1,24 @@
+# Webstorm
+.idea
+
+# VS Code
+.history
+
+# OSX
+.DS_Store
+
+# VIM
+*.swp
+*.un~
+
+# NPM
+npm-debug.log
+node_modules
+.npmrc
+*.log
+
+# coverage
+coverage
+
+#dist
+dist

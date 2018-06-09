@@ -1,0 +1,28 @@
+# Webstorm
+.idea
+
+# OSX
+.DS_Store
+
+# VIM
+*.swp
+*.un~
+
+# NPM
+npm-debug.log
+node_modules
+.npmrc
+*.log
+
+# coverage
+coverage
+
+# non dist files
+coverage
+example
+src
+.travis.yml
+.eslintrc
+.nvmrc
+.gitignore
+

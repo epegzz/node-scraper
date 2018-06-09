@@ -1,0 +1,51 @@
+{
+  "name": "@epegzz/superscraper",
+  "version": "1.0.0",
+  "author": "Daniel Schäfer <epegzz@gmail.com>",
+  "description": "A scraping lib based on superagent",
+  "keywords": [
+    "scraping",
+    "scraper"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/epegzz/superscraper"
+  },
+  "engineStrict": true,
+  "main": "dist/superscraper.js",
+  "scripts": {
+    "test": "NODE_ENV=testing jest --verbose",
+    "watch-test": "NODE_ENV=testing jest --watch",
+    "coverage": "NODE_ENV=testing jest && codecov",
+    "build": "NODE_ENV=production babel src -d dist",
+    "lint": "NODE_ENV=testing eslint src",
+    "lint-check": "NODE_ENV=testing eslint --print-config .eslintrc.js | eslint-config-prettier-check"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "superagent": "^3.8.3",
+    "superagent-mock": "^3.7.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "codecov": "^3.0.1",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-es2015": "^1.1.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jest": "^21.15.1",
+    "eslint-plugin-prettier": "^2.3.1",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
+    "prettier-eslint": "^8.8.1"
+  }
+}
