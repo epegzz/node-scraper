@@ -10,7 +10,8 @@
       {
         "targets": {
           "node": "4"
-        }
+        },
+        "useBuiltIns": "usage"
       }
     ]
   ],

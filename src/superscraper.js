@@ -1,9 +1,10 @@
+import url from 'url'
 import request from 'superagent'
 import cheerio from 'cheerio'
 
-const makeRequest = url =>
+const makeRequest = requestUrl =>
   new Promise((resolve, reject) => {
-    request.get(url).end((err, res) => {
+    request.get(requestUrl).end((err, res) => {
       if (err) {
         reject(err)
         return
@@ -12,8 +13,8 @@ const makeRequest = url =>
     })
   })
 
-async function* scrape(url, parser) {
-  const res = await makeRequest(url)
+async function* scrape(requestUrl, parser) {
+  const res = await makeRequest(requestUrl)
 
   if (res.status === 200) {
     const html = res.body
@@ -26,28 +27,41 @@ async function* scrape(url, parser) {
         .text()
         .trim()
 
-    const followRequests = []
-    const follow = function* follow(url, parser) {
-      followRequests.push({ url, parser })
+    const getLinkUrls = query => {
+      const urls = []
+      $(query).each((index, link) => {
+        urls.push(url.resolve(requestUrl, $(link).attr('href')))
+      })
+      return urls
+    }
+
+    const followUpRequests = []
+    const follow = function follow(url, parser) {
+      followUpRequests.push({ url, parser })
     }
 
     const data = parser({
-      url,
-      data,
+      request: {
+        url: requestUrl,
+      },
+      response: {
+        body: res.body,
+        status: res.status,
+      },
       getText,
+      getLinkUrls,
       follow,
     })
 
-
-    if (followRequests.length) {
-      for (const followRequest of followRequests) {
-        yield* scrape(followRequest.url, followRequest.parser)
+    if (followUpRequests.length) {
+      for (const followUpRequest of followUpRequests) {
+        yield* scrape(followUpRequest.url, followUpRequest.parser)
       }
     }
 
     if (data) {
       yield {
-        url,
+        url: requestUrl,
         status: res.status,
         data,
       }
