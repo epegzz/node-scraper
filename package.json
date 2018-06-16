@@ -19,11 +19,14 @@
   "main": "dist/superscraper.js",
   "scripts": {
     "test": "NODE_ENV=testing jest --verbose --forceExit",
+    "precommit": "lint-staged",
     "watch-test": "NODE_ENV=testing jest --watch",
     "coverage": "NODE_ENV=testing jest && codecov",
     "build": "NODE_ENV=production babel src -d dist",
-    "lint": "NODE_ENV=testing eslint src",
-    "lint-check": "NODE_ENV=testing eslint --print-config .eslintrc.js | eslint-config-prettier-check"
+    "lint": "eslint src"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"]
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
@@ -48,7 +51,9 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-prettier": "^2.3.1",
+    "husky": "^0.14.3",
     "jest": "^22.4.3",
+    "lint-staged": "^7.2.0",
     "prettier": "^1.12.1",
     "prettier-eslint": "^8.8.1"
   }
