@@ -50,8 +50,12 @@ const carIndexPageParser = ({ follow, getLinks }) => {
 
 const scrapeResults = scrape('http://example.com', carIndexPageParser)
 
-for (carInfo of scrapeResults) {
-  console.log(carInfo) // { brand: 'BMW', model: '3', color: 'black' }
+for await (carInfo of scrapeResults) {
+  console.log(carInfo)
 }
+// logs:
+// { brand: 'BMW', model: '3', color: 'black' }
+// { brand: 'BMW', model: '3', color: 'black' }
+// { brand: 'BMW', model: '3', color: 'black' }
 ```
 
