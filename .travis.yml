@@ -2,24 +2,24 @@ sudo: false
 language: node_js
 cache:
   directories:
-    - node_modules
+  - node_modules
 codecov: true
 env:
-  - NODE_ENV=development
+- NODE_ENV=development
 matrix:
   fast_finish: true
 install:
-  - NODE_ENV=development npm install
+- NODE_ENV=development npm install
 script:
-  - npm run lint
-  - npm run test -- --runInBand
-  - npm run coverage
+- npm run lint
+- npm run test -- --runInBand
+- npm run coverage
 deploy:
   skip_cleanup: true
   provider: npm
   email: epegzz@gmail.com
   api_key:
-    secure: NjmMGjjkDLVwD8X0Y+eMitVMqEcounMChgBmLfUW+fOUNxN1NP9qUxRwK0mUu0Df9H5603mv5tJ2KsIFTqpKKB7/PpP9FxsVz5e0yLr1HCWQCETtf0s2iiSC5BO/HZGLW/6r+4qDBOV4jnaqjpLWXD2DQT/I20+vX7I2y3O8bMFEay+cMuW4PIQFoElXetr0VJ7exr8kziq6Ft00qRDXbZAGJV16oWY6HpB6pIox7K7tfgt5mQuqfFUBQ0MvwBOfAw1wyBuI25Jq8+PvFmp+Cfv+eFgBW7f3ouzSRrip7q+M/1MwrVNFVogPzMQMXMogchI8NZt0cskxUeExhxmC92de/C4mgsx3RrrNbGU8++mKm7eK0k4A66iBm75S7y7Hm0sxHn5JAHuGAzNykcV6nVLa8uYfD624PRw0JodK+/CRQUi/V6quECD8V/XQ/SSwKNRmhGzgHH/8vxWXvugRss4U7b8qLLYZ8iwAnInogkrzfr+PZdeYoSuFhFwmwzZ0oAb8nv5RTcHGanjLzNtXb3isrAbdPpElMJfRZruKMdVA8A4nrDy73czlrVVhTRcM4hXeuK8gAtyOWyznzjAiLXI91wBN6MQxir+5EAKDC6ASe7+rYFcPAPTuz4UhOGkJ8kE5ixI91mm5ne6O6rn1DkAmoWAISs1MjbOcZSCw2Mc=
+    secure: JNlU5fpCRhbpEVnmFbBopzRx5zpSqwmvpxY8gfacSg+GBxME9mIE3Uu2rnSE7GymeDyTse9HeBmd5TjrZ43FnI/RYyoJF6UEE/fVyFAaOGs/ID5H2DBtTFZ44VEznKHN8M5NVw/CDAUR4L3ySZYPATsMWRNGQHQRt/JnFggsqZ3Vlv5/8OpXDbWJNgibzgef9kLPkwwIDy25hiMuAVZ6RmgDqnq52kju48ugxLFLb2P2HgKLbVusGDGDZAmgPY5iIXGQx8EOWiW6UDBTiNQ0zVl/4mBRO4ZKSANIBt8IEia5X9tMNvgMXNR1QaYYdmto0K0H67ZLnahzSZoRXobNy2Y4272N/ilhCoJkp68/G0XW985O2oo3QElhjZkhvUem42IZfhd/tpnnEdTvpg7lvbylrTTV3wHtG6S/+baaoRE1uGzEJhDDo9JnPSM0rEWvXqFVvYfMy8eFoBw3fuGirDRm7V2J7V85rIIpPx4cRZPaeHaJziIhWHTjxJRhtZcqXmptUybOYRjlIlP0QS8MZg//kdEuXjoCzCyuJp/0Et+uq9IlSR6w+Txse7wlFD++go15sApVodSKo/KxkjI7nqUYZ0lnYOt+XRk9I5KiPWaKHtdeOgaYDNNPeabHJrx36HlCo4Bitt0yidCEWq4zlRvDJUUB6loh3odRMSnLaBs=
   on:
     tags: true
     repo: epegzz/node-scraper
