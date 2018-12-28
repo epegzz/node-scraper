@@ -21,11 +21,23 @@
   </a>
 </p>
 
+# Install
+
+using npm
+```sh
+npm install @epegzz/node-scraper --save
+```
+
+using yarn
+```sh
+yarn add @epegzz/node-scraper --save
+```
+
 
 # Usage
 
 ```js
-const scrape = require('node-scraper')
+const scrape = require('@epegzz/node-scraper')
 
 async function* parseCars({ find, follow, capture }) {
   const car = find('.car')
