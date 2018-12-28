@@ -21,8 +21,11 @@ coverage
 coverage
 example
 src
+.babelrc
 .travis.yml
 .eslintrc
 .nvmrc
 .gitignore
+.jest.config.js
+*.test.js
 
