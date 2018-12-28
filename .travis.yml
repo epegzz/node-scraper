@@ -2,7 +2,8 @@ sudo: false
 language: node_js
 cache:
   directories:
-  - node_modules
+    - node_modules
+codecov: true
 env:
   - NODE_ENV=development
 matrix:
@@ -13,8 +14,6 @@ script:
   - npm run lint
   - npm run test -- --runInBand
   - npm run coverage
-before_deploy:
-  - npm run build
 deploy:
   skip_cleanup: true
   provider: npm

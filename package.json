@@ -23,7 +23,6 @@
     "precommit": "lint-staged",
     "watch-test": "NODE_ENV=testing jest --watch",
     "coverage": "NODE_ENV=testing jest && codecov",
-    "build": "NODE_ENV=production babel src -d dist",
     "lint": "eslint src",
     "format": "prettier-eslint --write \"src/**/*.js\""
   },
