@@ -54,7 +54,7 @@ npm install @epegzz/node-scraper --save
 
 using yarn
 ```sh
-yarn add @epegzz/node-scraper --save
+yarn add @epegzz/node-scraper
 ```
 
 # Concept
