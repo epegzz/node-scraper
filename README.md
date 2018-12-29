@@ -6,6 +6,7 @@
 <div align="center">
   A minimalistic yet powerful tool for collecting data from websites.
 </div>
+<br/>
 
 <p align="center">
   <a target="_blank" href="https://travis-ci.org/epegzz/node-scraper">
@@ -28,7 +29,7 @@
   </a>
 </p>
 
-##### Table of Contents
+# Table of Contents
 - [Features](#features)
 - [Installing](#installing)
 - [Concept](#concept)
@@ -56,7 +57,6 @@ using yarn
 yarn add @epegzz/node-scraper --save
 ```
 
-<a name="concept" />
 # Concept
 
 node-scraper is very minimalistic: You provide the URL of the website you want
@@ -73,16 +73,17 @@ The parser functions are generators, which means you will `yield` your results
 const scrape = require('@epegzz/node-scraper')
 
 // Start scraping our made-up website `https://car-list.com` and console log the results
+//
 // This will print:
 //   { brand: 'Ford', model: 'Focus', ratings: [{ value: 5, comment: 'Excellent car!'}]}
 //   { brand: 'Audi', model: 'A8', ratings: [{ value: 4.5, comment: 'I like it'}, {value: 5, comment: 'Best car I ever owned'}]}
 //   ...
-(async function() {
+;(async function() {
   const scrapeResults = scrape('https://car-list.com', parseCars)
   for await (const story of scrapeResults) {
     console.log(JSON.stringify(story))
   }
-})();
+})()
 
 /**
  * https://car-list.com
@@ -181,7 +182,7 @@ Example:
   // yields the href and text of all links from the webpage
   for (const link in find('a')) {
     yield {
-        linkHref: link.attr('href),
+        linkHref: link.attr('href'),
         linkText: link.text(),
     };
   }
