@@ -62,10 +62,10 @@ yarn add @epegzz/node-scraper --save
 node-scraper is very minimalistic: You provide the URL of the website you want
 to scrape and a parser function that converts HTML into Javascript objects.
 
-The parser functions are generators, which means you will `yield` your results
+Parser functions are implemented as generators, which means they will `yield` results
  instead of returning them. That guarantees that network requests are made only
  as fast/frequent as we can consume them.
- Stopping the scraper is simply done by stopping to consume results ✨
+ Stopping consuming the results will stop further network requests ✨
 
 # Example
 
@@ -140,7 +140,7 @@ function* parseCarRatings({ find }) {
 
 ## Creating a parser
 
-A parser is a synchronous or asynchronous generator function, that receives
+A parser is a synchronous or asynchronous generator function which receives
 three utility functions as argument: [find](#findselector-node-parse-the-dom-of-the-website), [follow](#followurl-parser-add-another-url-to-parse) and [capture](#captureurl-parser-parse-urls-without-yielding-the-results).
 
 Whatever is `yield`ed by the generator function, can be consumed as scrape result.
@@ -170,17 +170,17 @@ async function* parseCars({ find, follow, capture }) {
 ### `find(selector, [node])` Parse the DOM of the website
 
 The `find` function allows you to extract data from the website.
-It's compatible to [Cheerio](https://cheerio.js.org), so check out their
+It's basically just performing a [Cheerio](https://cheerio.js.org) query, so check out their
 [documentation](https://github.com/cheeriojs/cheerio) for details on how to use it.
 
-Think of `find` as the `$` in their documentation, loaded with the content of the
-website.
+Think of `find` as the `$` in their documentation, loaded with the HTML contents of the
+scraped website.
 
-Example:
+__Example__:
 
 ```js
   // yields the href and text of all links from the webpage
-  for (const link in find('a')) {
+  for (const link of find('a')) {
     yield {
         linkHref: link.attr('href'),
         linkText: link.text(),
@@ -189,7 +189,7 @@ Example:
 ```
 
 The major difference between cheerio's `$` and node-scraper's `find` is, that the results of `find`
-are iterable. So you can do `for (element in find(selector)) { … }` instead of having
+are iterable. So you can do `for (element of find(selector)) { … }` instead of having
 to use a `.each` callback, which is important if we want to yield results.
 
 The other difference is, that you can pass an optional `node` argument to `find`. This
