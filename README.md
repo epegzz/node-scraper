@@ -34,9 +34,9 @@
 - [Concept](#concept)
 - [Example](#example)
 - [API](#api)
-  - [find(selector, [node])](#findselector-node-query-and-parse-the-dom-of-the-website)
+  - [find(selector, [node])](#findselector-node-parse-the-dom-of-the-website)
   - [follow(url, [parser])](#followurl-parser-add-another-url-to-parse)
-  - [capture(url, parser)](#captureurl-parser)
+  - [capture(url, parser)](#captureurl-parser-parse-urls-without-yielding-the-results)
 
 # Features
 
@@ -154,7 +154,7 @@ async function* parseCars({ find, follow, capture }) {
       ratings: await capture(car.find('a.ratings').attr('href'), parseCarRatings)
     }
   }
-  follow(find('.next-page'))
+  follow(find('a.next-page').href)
 }
 
 (async function() {
@@ -166,16 +166,28 @@ async function* parseCars({ find, follow, capture }) {
 })();
 ```
 
-### `find(selector, [node])` Query and parse the DOM of the website
+### `find(selector, [node])` Parse the DOM of the website
 
-The `find` function allows you to find and extract the information from the website.
+The `find` function allows you to extract data from the website.
 It's compatible to [Cheerio](https://cheerio.js.org), so check out their
 [documentation](https://github.com/cheeriojs/cheerio) for details on how to use it.
 
 Think of `find` as the `$` in their documentation, loaded with the content of the
 website.
 
-The major difference between cheerio's `$` and `find` is, that the results of `find`
+Example:
+
+```js
+  // yields the href and text of all links from the webpage
+  for (const link in find('a')) {
+    yield {
+        linkHref: link.attr('href),
+        linkText: link.text(),
+    };
+  }
+```
+
+The major difference between cheerio's `$` and node-scraper's `find` is, that the results of `find`
 are iterable. So you can do `for (element in find(selector)) { … }` instead of having
 to use a `.each` callback, which is important if we want to yield results.
 
@@ -193,7 +205,7 @@ its link:
 ```js
 async function* parser({ find, follow }) {
   ...
-  follow(find('.next-page'))
+  follow(find('a.next-page').attr('href'))
 }
 ```
 
