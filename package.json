@@ -1,6 +1,6 @@
 {
   "name": "@epegzz/node-scraper",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "Daniel Schäfer <epegzz@gmail.com>",
   "description": "A scraping lib based on superagent",
   "keywords": [
