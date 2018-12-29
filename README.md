@@ -60,12 +60,12 @@ yarn add @epegzz/node-scraper --save
 # Concept
 
 node-scraper is very minimalistic: You provide the URL of the website you want
-to scrape and a parser function that converts HTML into a Javascript object.
+to scrape and a parser function that converts HTML into Javascript objects.
 
 The parser functions are generators, which means you will `yield` your results
- instead of returning them. That guarantees that we will make requests only
- as fast as we can consume it. And if you have enough results, simply stop consuming
- the results, and `node-scraper` will stop making network requests ✨
+ instead of returning them. That guarantees that network requests are made only
+ as fast/frequent as we can consume them.
+ Stopping the scraper is simply done by stopping to consume results ✨
 
 # Example
 
@@ -80,8 +80,8 @@ const scrape = require('@epegzz/node-scraper')
 //   ...
 ;(async function() {
   const scrapeResults = scrape('https://car-list.com', parseCars)
-  for await (const story of scrapeResults) {
-    console.log(JSON.stringify(story))
+  for await (const carListing of scrapeResults) {
+    console.log(JSON.stringify(carListing))
   }
 })()
 
@@ -141,7 +141,7 @@ function* parseCarRatings({ find }) {
 ## Creating a parser
 
 A parser is a synchronous or asynchronous generator function, that receives
-three utility functions as argument: `find`, `capture` and `follow`.
+three utility functions as argument: [find](#findselector-node-parse-the-dom-of-the-website), [follow](#followurl-parser-add-another-url-to-parse) and [capture](#captureurl-parser-parse-urls-without-yielding-the-results).
 
 Whatever is `yield`ed by the generator function, can be consumed as scrape result.
 
@@ -199,9 +199,8 @@ inner HTML.
 
 ### `follow(url, [parser])` Add another URL to parse
 
-The main use-case for the `follow` function is probably if you are scraping
-a paginated website. You would then `find` the `next` button, and follow
-its link:
+The main use-case for the `follow` function scraping paginated websites.
+In that case you would use the href of the "next" button to let the scraper `follow` to the next page:
 
 ```js
 async function* parser({ find, follow }) {
@@ -217,10 +216,11 @@ results of the new URL. You can, however, provide a different parser if you like
 ### `capture(url, parser)` Parse URLs without yielding the results
 
 The `capture` function is somewhat similar to the `follow` function: It takes
-a new URL and a parser function to scrape data. But instead of yielding it,
-it captures them and returns them as array.
-This is useful if you want add more details to a scraped object, which requires
-an additional page load:
+a new URL and a parser function as argument to scrape data. But instead of yielding the data as scrape results
+it instead returns them as an array.
+
+This is useful if you want add more details to a scraped object, where getting those details requires
+an additional network request:
 
 ```js
 async function* parseCars({ find, follow, capture }) {
