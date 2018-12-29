@@ -53,7 +53,10 @@ async function* scrape(requestUrl, parserFunction) {
 
   if (followUpRequests.length) {
     for (const followUpRequest of followUpRequests) {
-      yield* scrape(followUpRequest.url, followUpRequest.parser || parserFunction)
+      yield* scrape(
+        followUpRequest.url,
+        followUpRequest.parser || parserFunction
+      )
     }
   }
 }

@@ -72,7 +72,9 @@ describe('node-scraper', () => {
   Object.keys(SCENARIOS).forEach(scenarioName => {
     const scenario = SCENARIOS[scenarioName]
     test(scenarioName, async () => {
-      axios.get.mockImplementation(() => Promise.resolve({ data: scenario.html || '' }))
+      axios.get.mockImplementation(() =>
+        Promise.resolve({ data: scenario.html || '' })
+      )
 
       const scrapeResults = scrape(MOCK_URL, scenario.parser)
 
