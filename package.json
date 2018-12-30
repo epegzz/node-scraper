@@ -2,7 +2,7 @@
   "name": "@epegzz/node-scraper",
   "version": "1.1.0",
   "author": "Daniel Schäfer <epegzz@gmail.com>",
-  "description": "A scraping lib based on superagent",
+  "description": "Scraping websites made easy! A minimalistic yet powerful tool for collecting data from websites.",
   "keywords": [
     "node",
     "scraping",
