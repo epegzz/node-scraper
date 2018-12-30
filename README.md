@@ -36,8 +36,8 @@
 - [Example](#example)
 - [API](#api)
   - [find(selector, [node])](#findselector-node-parse-the-dom-of-the-website)
-  - [follow(url, [parser])](#followurl-parser-add-another-url-to-parse)
-  - [capture(url, parser)](#captureurl-parser-parse-urls-without-yielding-the-results)
+  - [follow(url, [parser], [context])](#followurl-parser-context-add-another-url-to-parse)
+  - [capture(url, parser, [context])](#captureurl-parser-context-parse-urls-without-yielding-the-results)
 
 # Features
 
@@ -129,7 +129,7 @@ function* parseCarRatings({ find }) {
   for (const rating of ratings) {
     yield {
       value: rating.find('.value').text(),
-      comment: ratins.find('.comment').text(),
+      comment: rating.find('.comment').text(),
     }
   }
 }
@@ -141,7 +141,9 @@ function* parseCarRatings({ find }) {
 ## Creating a parser
 
 A parser is a synchronous or asynchronous generator function which receives
-three utility functions as argument: [find](#findselector-node-parse-the-dom-of-the-website), [follow](#followurl-parser-add-another-url-to-parse) and [capture](#captureurl-parser-parse-urls-without-yielding-the-results).
+three utility functions as argument: [find](#findselector-node-parse-the-dom-of-the-website), [follow](#followurl-parser-context-add-another-url-to-parse) and [capture](#captureurl-parser-context-parse-urls-without-yielding-the-results).
+
+A fourth parser function argument is the `context` variable, which can be passed using the `scrape`, `follow` or `capture` function.
 
 Whatever is `yield`ed by the generator function, can be consumed as scrape result.
 
@@ -158,13 +160,13 @@ async function* parseCars({ find, follow, capture }) {
   follow(find('a.next-page').href)
 }
 
-(async function() {
+;(async function() {
   const scrapeResults = scrape('https://car-list.com', parseCars)
   for await (const story of scrapeResults) {
     // whatever is yielded by the parser, ends up here
     console.log(JSON.stringify(story))
   }
-})();
+})()
 ```
 
 ### `find(selector, [node])` Parse the DOM of the website
@@ -197,7 +199,7 @@ will not search the whole document, but instead limits the search to that partic
 inner HTML.
 
 
-### `follow(url, [parser])` Add another URL to parse
+### `follow(url, [parser], [context])` Add another URL to parse
 
 The main use-case for the `follow` function scraping paginated websites.
 In that case you would use the href of the "next" button to let the scraper `follow` to the next page:
@@ -213,7 +215,7 @@ The `follow` function will by default use the current parser to parse the
 results of the new URL. You can, however, provide a different parser if you like.
 
 
-### `capture(url, parser)` Parse URLs without yielding the results
+### `capture(url, parser, [context])` Parse URLs without yielding the results
 
 The `capture` function is somewhat similar to the `follow` function: It takes
 a new URL and a parser function as argument to scrape data. But instead of yielding the data as scrape results

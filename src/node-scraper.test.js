@@ -66,6 +66,54 @@ const SCENARIOS = {
     },
     expected: ['success'],
   },
+
+  'with global context in `capture` function': {
+    context: { test: 'works' },
+    parser: async function*({ capture, context }) {
+      yield* await capture(MOCK_URL, function* simpleParser({ context }) {
+        yield context.test
+      })
+    },
+    expected: ['works'],
+  },
+
+  'with custom context in `capture` function': {
+    context: { test: 'wrong' },
+    parser: async function*({ capture, context }) {
+      yield* await capture(
+        MOCK_URL,
+        function* simpleParser({ context }) {
+          yield context.test
+        },
+        { test: 'works' }
+      )
+    },
+    expected: ['works'],
+  },
+
+  'with global context in `follow` function': {
+    context: { test: 'works' },
+    parser: async function*({ follow }) {
+      follow(MOCK_URL, function* simpleParser({ context }) {
+        yield context.test
+      })
+    },
+    expected: ['works'],
+  },
+
+  'with custom context in `follow` function': {
+    context: { test: 'wrong' },
+    parser: async function*({ follow }) {
+      follow(
+        MOCK_URL,
+        function* simpleParser({ context }) {
+          yield context.test
+        },
+        { test: 'works' }
+      )
+    },
+    expected: ['works'],
+  },
 }
 
 describe('node-scraper', () => {
@@ -76,7 +124,7 @@ describe('node-scraper', () => {
         Promise.resolve({ data: scenario.html || '' })
       )
 
-      const scrapeResults = scrape(MOCK_URL, scenario.parser)
+      const scrapeResults = scrape(MOCK_URL, scenario.parser, scenario.context)
 
       const items = []
       for await (const item of scrapeResults) {
