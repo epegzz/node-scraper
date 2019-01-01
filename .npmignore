@@ -19,7 +19,7 @@ coverage
 
 # non dist files
 coverage
-example
+examples
 src
 .babelrc
 .travis.yml
@@ -28,4 +28,5 @@ src
 .gitignore
 .jest.config.js
 *.test.js
-
+.prettierrc
+jest.config.js
