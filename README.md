@@ -138,9 +138,41 @@ function* parseCarRatings({ find }) {
 
 # API
 
-## Creating a parser
+## Usage
 
-A parser is a synchronous or asynchronous generator function which receives
+Here's the basic usage:
+
+```js
+  // import scraper
+  const scrape = require('@epegzz/node-scraper')
+
+  // define a parser function
+  function* parser() {
+    // ...
+  }
+
+  // call scraper with URL and parser
+  const scrapeResults = scrape('https://some-website.com', parser)
+
+  // consume scrape results
+  for await (const scrapedItem of scrapeResults) {
+    console.log(JSON.stringify(scrapedItem))
+  }
+```
+
+Instead of calling the scraper with a URL, you can also call it with an [Axios
+request config object](https://github.com/axios/axios#request-config) to gain more control over the requests:
+
+```js
+const scrapeResults = scrape({
+  url: 'https://some-website.com',
+  timeout: 5000,
+}, parser)
+```
+
+## Creating a parser function
+
+A parser function is a synchronous or asynchronous generator function which receives
 three utility functions as argument: [find](#findselector-node-parse-the-dom-of-the-website), [follow](#followurl-parser-context-add-another-url-to-parse) and [capture](#captureurl-parser-context-parse-urls-without-yielding-the-results).
 
 A fourth parser function argument is the `context` variable, which can be passed using the `scrape`, `follow` or `capture` function.
@@ -162,12 +194,13 @@ async function* parseCars({ find, follow, capture }) {
 
 ;(async function() {
   const scrapeResults = scrape('https://car-list.com', parseCars)
-  for await (const story of scrapeResults) {
+  for await (const car of scrapeResults) {
     // whatever is yielded by the parser, ends up here
-    console.log(JSON.stringify(story))
+    console.log(JSON.stringify(car))
   }
 })()
 ```
+
 
 ### `find(selector, [node])` Parse the DOM of the website
 

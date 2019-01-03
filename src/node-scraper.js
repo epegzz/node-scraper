@@ -2,8 +2,18 @@ const resolve = require('url').resolve
 const request = require('axios')
 const cheerio = require('cheerio')
 
-async function* scrape(requestUrl, parserFunction, context) {
-  const res = await request.get(requestUrl)
+async function* scrape(requestUrlOrArgs, parserFunction, context) {
+  // Allow passing either request url or request args
+  const requestArgs = {
+    ...(typeof requestUrlOrArgs === 'string'
+      ? { url: requestUrlOrArgs }
+      : requestUrlOrArgs),
+  }
+
+  const res = await request({
+    method: 'get',
+    ...requestArgs,
+  })
 
   const $ = cheerio.load(res.data)
 
@@ -25,13 +35,20 @@ async function* scrape(requestUrl, parserFunction, context) {
 
   const followUpRequests = []
   const follow = (url, parser, context) => {
-    followUpRequests.push({ url: resolve(requestUrl, url), parser, context })
+    followUpRequests.push({
+      requestArgs: { ...requestArgs, url: resolve(requestArgs.url, url) },
+      parser,
+      context,
+    })
   }
 
   // follows a link but collects all results and returns them as an array
   const capture = async function(url, parserFunction, newContext) {
     const iterator = scrape(
-      resolve(requestUrl, url),
+      {
+        ...requestArgs,
+        url: resolve(requestArgs.url, url),
+      },
       parserFunction,
       newContext || context
     )
@@ -44,7 +61,7 @@ async function* scrape(requestUrl, parserFunction, context) {
 
   yield* parserFunction({
     request: {
-      url: requestUrl,
+      url: requestArgs.url,
     },
     response: {
       body: res.body,
@@ -59,7 +76,7 @@ async function* scrape(requestUrl, parserFunction, context) {
   if (followUpRequests.length) {
     for (const followUpRequest of followUpRequests) {
       yield* scrape(
-        followUpRequest.url,
+        followUpRequest.requestArgs,
         followUpRequest.parser || parserFunction,
         followUpRequest.context || context
       )

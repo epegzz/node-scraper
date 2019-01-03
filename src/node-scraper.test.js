@@ -114,17 +114,35 @@ const SCENARIOS = {
     },
     expected: ['works'],
   },
+
+  'with custom request args': {
+    requestArgs: { url: MOCK_URL, timeout: 10000 },
+    parser: async function*() {
+      yield 'works'
+    },
+    expected: ['works'],
+    assert: () =>
+      expect(axios).toHaveBeenCalledWith({
+        method: 'get',
+        url: MOCK_URL,
+        timeout: 10000,
+      }),
+  },
 }
 
 describe('node-scraper', () => {
   Object.keys(SCENARIOS).forEach(scenarioName => {
     const scenario = SCENARIOS[scenarioName]
     test(scenarioName, async () => {
-      axios.get.mockImplementation(() =>
+      axios.mockImplementation(() =>
         Promise.resolve({ data: scenario.html || '' })
       )
 
-      const scrapeResults = scrape(MOCK_URL, scenario.parser, scenario.context)
+      const scrapeResults = scrape(
+        scenario.requestArgs || MOCK_URL,
+        scenario.parser,
+        scenario.context
+      )
 
       const items = []
       for await (const item of scrapeResults) {
@@ -132,6 +150,7 @@ describe('node-scraper', () => {
       }
 
       expect(items).toEqual(scenario.expected)
+      scenario.assert && scenario.assert()
     })
   })
 })
